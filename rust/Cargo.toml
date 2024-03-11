@@ -1,5 +1,5 @@
 [package]
-name = "math_hints-rpc-server"
+name = "math_oracle-rpc-server"
 version = "0.1.0"
 edition = "2021"
 

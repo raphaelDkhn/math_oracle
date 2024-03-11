@@ -1,18 +1,25 @@
 use starknet::testing::cheatcode;
 #[derive(Drop, Serde)]
-struct Request {
-    n: u64,
+struct MathRequest {
+    operation: super::oracle::Operation,
+    operands: Array<i64>,
 }
 #[derive(Drop, Serde)]
-struct Response {
-    n: u64,
+struct MathResponse {
+    result: i64,
+}
+#[derive(Drop, Serde, PartialEq)]
+enum Operation {
+    Unknown,
+    Sqrt,
+    Exp,
 }
 #[generate_trait]
-impl SqrtOracle of SqrtOracleTrait {
-    fn sqrt(arg: super::oracle::Request) -> super::oracle::Response {
+impl MathOracle of MathOracleTrait {
+    fn calculate(arg: super::oracle::MathRequest) -> super::oracle::MathResponse {
         let mut serialized = ArrayTrait::new();
         arg.serialize(ref serialized);
-        let mut result = cheatcode::<'sqrt'>(serialized.span());
+        let mut result = cheatcode::<'calculate'>(serialized.span());
         Serde::deserialize(ref result).unwrap()
     }
 }

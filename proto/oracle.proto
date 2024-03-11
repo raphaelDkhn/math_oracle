@@ -1,15 +1,23 @@
+// proto/oracle.proto
 syntax = "proto3";
 
 package oracle;
 
-message Request {
-    uint64 n = 1;
+enum Operation {
+    UNKNOWN = 0;
+    SQRT = 1;
+    EXP = 2;
 }
 
-message Response {
-    uint64 n = 1;
+message MathRequest {
+    Operation operation = 1;
+    repeated int64 operands = 2;
 }
 
-service SqrtOracle {
-    rpc Sqrt(Request) returns (Response);
+message MathResponse {
+    int64 result = 1;
+}
+
+service MathOracle {
+    rpc Calculate(MathRequest) returns (MathResponse);
 }
